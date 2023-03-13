@@ -7,6 +7,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include "colis.hpp"
 
 using namespace std;
 
@@ -18,20 +19,26 @@ class DataBase {
         int capacityCar;    
         int nbPackages;    
         map<int,tuple<int,int>>& packages;
+        vector<Colis> &solutionsColis; 
         //P2    
         int nbCity;    
         vector<string>& nameCity;    
-        vector<vector<int>>&dist;
+        vector<vector<int>>& dist;
 
     public:
-        DataBase(string ville_file_name, string colis_file_name) : capacityCar(0), nbPackages(0), packages(*(new map<int,tuple<int,int>>())), nbCity(0), nameCity(*(new vector<string>())), dist(*(new vector<vector<int>>())) {
+        DataBase(string ville_file_name, string colis_file_name) : capacityCar(0), nbPackages(0), packages(*(new map<int,tuple<int,int>>())), solutionsColis(*(new vector<Colis>())), nbCity(0), nameCity(*(new vector<string>())), dist(*(new vector<vector<int>>())) {
             import_ville(ville_file_name);
             import_package(colis_file_name);
         }
 
-        int getCapacityCar() const { return capacityCar; }
-        int getNbPackages() const { return nbPackages; }
-        map<int,tuple<int,int>>& getPackages() { return packages; }
+        Colis newColis() {
+            Colis colis(capacityCar, packages);
+            return colis;
+        }
+
+        void addColis(Colis colis) {
+            this->solutionsColis.push_back(colis);
+        }
 
 /// @brief import les données des villes dans la base de données à partir d'un fichier
 /// @param file_name 
@@ -58,6 +65,7 @@ void import_ville(string file_name) {
 }
 
 /// @brief import les données des colis dans la base de données à partir d'un fichier
+/// @param file_name
 void import_package(string file_name) {
     ifstream file(file_name);
     string line;
@@ -69,10 +77,9 @@ void import_package(string file_name) {
         }
         else {
             istringstream iss(line);
-            vector<int> row;
-            for (string s; iss >> s;)
-                row.push_back(stoi(s));
-            packages.insert({row[0], make_tuple(row[1], row[2])});
+            int id, weight, volume;
+            iss >> id >> weight >> volume;
+            packages.insert(pair<int,tuple<int,int>>(id, make_tuple(weight, volume)));
         }
         i++;
     }
