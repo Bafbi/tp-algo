@@ -1,0 +1,25 @@
+Colis : 
+Capacité : 1
+Bénéfice : 20
+Solus Paquets : 
+6
+5
+4
+1
+Paquets : 
+1 : 8 5
+2 : 15 8
+3 : 13 6
+4 : 11 6
+5 : 8 3
+6 : 12 6
+7 : 10 5
+8 : 9 5
+
+Distance totale de 105 km
+Lille
+Roubaix
+Lens
+Seclin
+Lille
+

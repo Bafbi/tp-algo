@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include "colis.hpp"
+#include "ville.hpp"
 
 using namespace std;
 
@@ -24,9 +25,10 @@ class DataBase {
         int nbCity;    
         vector<string>& nameCity;    
         vector<vector<int>>& dist;
+        vector<Trajet> &solutionsTrajet;
 
     public:
-        DataBase(string ville_file_name, string colis_file_name) : capacityCar(0), nbPackages(0), packages(*(new map<int,tuple<int,int>>())), solutionsColis(*(new vector<Colis>())), nbCity(0), nameCity(*(new vector<string>())), dist(*(new vector<vector<int>>())) {
+        DataBase(string ville_file_name, string colis_file_name) : capacityCar(0), nbPackages(0), packages(*(new map<int,tuple<int,int>>())), solutionsColis(*(new vector<Colis>())), nbCity(0), nameCity(*(new vector<string>())), dist(*(new vector<vector<int>>())), solutionsTrajet(*(new vector<Trajet>())) {
             import_ville(ville_file_name);
             import_package(colis_file_name);
         }
@@ -38,6 +40,15 @@ class DataBase {
 
         void addColis(Colis colis) {
             this->solutionsColis.push_back(colis);
+        }
+
+        Trajet newTrajet() {
+            Trajet trajet(nameCity, dist);
+            return trajet;
+        }
+
+        void addTrajet(Trajet trajet) {
+            this->solutionsTrajet.push_back(trajet);
         }
 
 /// @brief import les données des villes dans la base de données à partir d'un fichier
@@ -84,6 +95,60 @@ void import_package(string file_name) {
         i++;
     }
 }
+
+void export_results(string namefile){
+    // create file if doesn't exist then export
+    ofstream file(namefile);
+    for (auto &colis : solutionsColis)
+    {
+        file << colis << endl;
+    }
+    for (auto &trajet : solutionsTrajet)
+    {
+        file << trajet << endl;
+    }
+}
+
+void export_best_results(string namefile){
+    // create file if doesn't exist then export
+    ofstream file(namefile);
+    file << findBestColis() << endl;
+    file << findBestTrajet() << endl;
+}
+
+Colis& findBestColis() {
+    Colis* bestColis = nullptr;
+    int bestBenefice = 0;
+    for (Colis& colis : solutionsColis) {
+        if (colis.getBenefice() > bestBenefice) {
+            bestBenefice = colis.getBenefice();
+            bestColis = &colis;
+        }
+    }
+    if (bestColis == nullptr) {
+        throw std::logic_error("No best colis found");
+    }
+    return *bestColis;
+}
+
+Trajet& findBestTrajet() {
+    int minDist = INT_MAX;
+    Trajet* bestTrajet = nullptr;
+
+    for (Trajet& trajet : solutionsTrajet) {
+        if (trajet.getDistance() < minDist) {
+            minDist = trajet.getDistance();
+            bestTrajet = &trajet;
+        }
+    }
+
+    if (bestTrajet == nullptr) {
+        throw runtime_error("No solutions found");
+    }
+
+    return *bestTrajet;
+}
+
 
 friend ostream &operator<<(ostream &os, const DataBase &db)
 {
