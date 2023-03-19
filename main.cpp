@@ -7,13 +7,14 @@
 
 using namespace std;
 
-int main() {
-    DataBase db("../input/4villes.txt", "../input/8colis40capacite.txt");
-    cout << db << endl;
+int main( int argc, char** argv) {
+    if (argc != 4) {
+        cout << "Usage: " << argv[0] << " <ville_file> <colis_file> <export_file>" << endl;
+        return 1;
+    }
 
-    // generate multiple colis
-    // solve them in parallel
-    // add them to the database
+    DataBase db(argv[1], argv[2]);
+    cout << db << endl;
     
     vector<thread> threads;
     for (int i = 0; i < 10; i++) {
@@ -37,7 +38,7 @@ int main() {
     }
     // cout << db.getBestColis() << endl;
 
-    db.export_best_results("../output/result.txt");
+    db.export_best_results(argv[3]);
 
 
     // Colis colis(db);
