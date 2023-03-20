@@ -8,6 +8,7 @@
 
 using namespace std;
 
+/// @brief centralize all the data of the problem
 class Colis {
 private:
     int capacity; 
@@ -31,6 +32,7 @@ public:
         return *this;
     }
 
+    /// @brief solve the problem with a glouton algorithm
     void glouton_solve(){
     int nbrObjets = packages.size();
     vector<tuple<int, float>> packing; // Tableau dans lequel on va ranger les couples : {numéro du paquet,valeur de bénéfice/consommation de capacité}
@@ -67,6 +69,8 @@ public:
     }
     }
 
+    /// @brief Solve the problem with a random greedy algorithm
+    /// @param seed The seed for the random number generator
     void glouton_random_solve(unsigned int seed) {
         srand(seed);
         int nbrObjets = packages.size();

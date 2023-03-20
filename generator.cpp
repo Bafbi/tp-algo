@@ -1,4 +1,12 @@
 #include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
+#include <map>
+#include <tuple>
+#include <random>
+
 constexpr int codeASCIIde_a=97;
 constexpr int codeASCIIde_A=65;
 constexpr int nombreDeLettres=26;
@@ -106,4 +114,9 @@ void exportData(){
     }
 
     outfile1.close(); outfile2.close();
+}
+
+int main(){
+    exportData();
+    return 0;
 }

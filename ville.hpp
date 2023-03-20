@@ -8,7 +8,7 @@
 
 using namespace std;
 
-/// @brief 
+/// @brief centralize all the data of the problem
 class Trajet {
 private:
     int distance;
@@ -31,6 +31,8 @@ public:
         return *this;
     }
 
+    /// @brief solve the problem with a glouton algorithm
+    /// @param start_index the index of the start city
     void glouton_solve(int start_index) {
         
         // On récupère les informations 
@@ -110,6 +112,10 @@ public:
 
     /////////////////////////////////////////////////////////////////////////////////
 
+    /// @brief solve the problem with a glouton random algorithm
+    /// @param start_index the index of the start city
+    /// @param seed the seed of the random number generator
+    /// @return void
     auto glouton_random_solve(int start_index, unsigned int seed) {
         srand(seed);
 

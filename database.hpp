@@ -33,26 +33,34 @@ class DataBase {
             import_package(colis_file_name);
         }
 
+        /// @brief import les données des colis dans la base de données à partir d'un fichier
+        /// @return A new colis with the data of the database
         Colis newColis() {
             Colis colis(capacityCar, packages);
             return colis;
         }
 
+        /// @brief add a solved colis to the database
+        /// @param colis 
         void addColis(Colis colis) {
             this->solutionsColis.push_back(colis);
         }
 
+        /// @brief create a new trajet with the data for the resolution of the problem
+        /// @return A new trajet with the data of the database
         Trajet newTrajet() {
             Trajet trajet(nameCity, dist);
             return trajet;
         }
 
+        /// @brief add a solved trajet to the database
+        /// @param trajet 
         void addTrajet(Trajet trajet) {
             this->solutionsTrajet.push_back(trajet);
         }
 
 /// @brief import les données des villes dans la base de données à partir d'un fichier
-/// @param file_name 
+/// @param file_name le nom du fichier
 void import_ville(string file_name) {
     ifstream file(file_name);
     string line;
@@ -76,7 +84,7 @@ void import_ville(string file_name) {
 }
 
 /// @brief import les données des colis dans la base de données à partir d'un fichier
-/// @param file_name
+/// @param file_name le nom du fichier
 void import_package(string file_name) {
     ifstream file(file_name);
     string line;
@@ -96,6 +104,8 @@ void import_package(string file_name) {
     }
 }
 
+/// @brief export tous les résultats dans un fichier
+/// @param namefile le nom du fichier
 void export_results(string namefile){
     // create file if doesn't exist then export
     ofstream file(namefile);
@@ -109,6 +119,8 @@ void export_results(string namefile){
     }
 }
 
+/// @brief export le meilleur résultat de chaque problème dans un fichier
+/// @param namefile le nom du fichier
 void export_best_results(string namefile){
     // create file if doesn't exist then export
     ofstream file(namefile);
@@ -116,6 +128,8 @@ void export_best_results(string namefile){
     file << findBestTrajet() << endl;
 }
 
+/// @brief find the best colis in the solved colis list
+/// @return the best colis
 Colis& findBestColis() {
     Colis* bestColis = nullptr;
     int bestBenefice = 0;
@@ -131,6 +145,8 @@ Colis& findBestColis() {
     return *bestColis;
 }
 
+/// @brief find the best trajet in the solved trajet list
+/// @return the best trajet
 Trajet& findBestTrajet() {
     int minDist = INT_MAX;
     Trajet* bestTrajet = nullptr;
@@ -149,7 +165,7 @@ Trajet& findBestTrajet() {
     return *bestTrajet;
 }
 
-
+/// @brief print the database
 friend ostream &operator<<(ostream &os, const DataBase &db)
 {
     os << "capacityCar: " << db.capacityCar << endl;

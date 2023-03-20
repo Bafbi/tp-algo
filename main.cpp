@@ -2,7 +2,6 @@
 #include <thread>
 #include "database.hpp"
 #include "colis.hpp"
-#include "generator.hpp"
 #include "ville.hpp"
 
 using namespace std;
@@ -36,14 +35,8 @@ int main( int argc, char** argv) {
     for (auto& t : threads) {
         t.join();
     }
-    // cout << db.getBestColis() << endl;
 
     db.export_best_results(argv[3]);
 
-
-    // Colis colis(db);
-    // cout << colis << endl;
-    // colis.glouton_solve(db);
-    // cout << colis << endl;
     return 0;
 }
